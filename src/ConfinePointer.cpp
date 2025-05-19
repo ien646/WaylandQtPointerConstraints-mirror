@@ -13,6 +13,12 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
 ConfinePointer::ConfinePointer(QWindow* window)
     : _window(window)
 {
+    if (_window == nullptr)
+    {
+        std::printf("(LockPointer) Window pointer is null!\nGet ready to crash...\n");
+        return;
+    }
+
     _registryListener.global = [](void* data, wl_registry* registry, const uint32_t name, const char* interface,
                                   const uint32_t version)
     {
