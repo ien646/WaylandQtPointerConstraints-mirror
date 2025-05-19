@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD 23)
 
 set(TARGET_NAME "WaylandQtPointerConstraints")
 
+set(CMAKE_AUTOMOC ON)
+
 find_program(WAYLAND_SCANNER wayland-scanner)
 if (NOT WAYLAND_SCANNER)
     message(FATAL_ERROR "wayland-scanner was not found!\nCheck if the executable is available in PATH")
@@ -23,9 +25,11 @@ execute_process(
 
 add_library(
         ${TARGET_NAME}
+        include/WaylandQtPointerConstraints/LockPointer.h
         src/LockPointer.cpp
         src/ConfinePointer.cpp
         ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols/pointer-constraints.c
+        ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols/relative-pointer.c
 )
 
 if (USE_CUSTOM_NAMESPACE)
