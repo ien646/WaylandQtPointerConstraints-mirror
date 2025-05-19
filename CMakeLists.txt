@@ -16,13 +16,16 @@ if (NOT WAYLAND_SCANNER)
     message(FATAL_ERROR "wayland-scanner was not found!\nCheck if the executable is available in PATH")
 endif ()
 
-execute_process(COMMAND bash -c ${CMAKE_SOURCE_DIR}/generate-protocols.sh)
+execute_process(
+        COMMAND bash -c ${CMAKE_CURRENT_SOURCE_DIR}/generate-protocols.sh
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 add_library(
         ${TARGET_NAME}
         src/LockPointer.cpp
         src/ConfinePointer.cpp
-        ${CMAKE_BINARY_DIR}/generated-protocols/pointer-constraints.c
+        ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols/pointer-constraints.c
 )
 
 if (USE_CUSTOM_NAMESPACE)
@@ -41,13 +44,13 @@ target_link_libraries(
         wayland-client)
 
 target_include_directories(${TARGET_NAME} PUBLIC include)
-target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_BINARY_DIR}/generated-protocols)
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols)
 
 if (BUILD_EXAMPLES)
     add_executable(LockingButton examples/LockingButton.cpp)
     add_executable(ConfinedButton examples/ConfinedButton.cpp)
     target_link_libraries(LockingButton ${TARGET_NAME} Qt6::Widgets)
     target_link_libraries(ConfinedButton ${TARGET_NAME} Qt6::Widgets)
-    target_include_directories(LockingButton PRIVATE ${CMAKE_BINARY_DIR}/generated-protocols)
-    target_include_directories(ConfinedButton PRIVATE ${CMAKE_BINARY_DIR}/generated-protocols)
+    target_include_directories(LockingButton PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols)
+    target_include_directories(ConfinedButton PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols)
 endif ()
