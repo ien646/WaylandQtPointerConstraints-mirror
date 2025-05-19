@@ -44,7 +44,7 @@ target_link_libraries(
         wayland-client)
 
 target_include_directories(${TARGET_NAME} PUBLIC include)
-target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols)
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/generated-protocols)
 
 if (BUILD_EXAMPLES)
     add_executable(LockingButton examples/LockingButton.cpp)
