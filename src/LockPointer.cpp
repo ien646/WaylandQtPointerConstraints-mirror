@@ -30,6 +30,22 @@ LockPointer::LockPointer(QWindow* window)
     _display = static_cast<wl_display*>(_nativeInterface->nativeResourceForIntegration("wl_display"));
 }
 
+LockPointer::~LockPointer()
+{
+    if (_locked)
+    {
+        unlockPointer();
+    }
+    if (_lockedRegion)
+    {
+        wl_region_destroy(_lockedRegion);
+    }
+    if (_pointerConstraintsV1)
+    {
+        zwp_pointer_constraints_v1_destroy(_pointerConstraintsV1);
+    }
+}
+
 void LockPointer::lockPointer(const QRect region)
 {
     if (_locked)
