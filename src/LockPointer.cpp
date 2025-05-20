@@ -1,4 +1,4 @@
-#include "ConfinePointer.h"
+#include <WaylandQtPointerConstraints/LockPointer.h>
 
 #include <QGuiApplication>
 #include <qpa/qplatformnativeinterface.h>
@@ -10,7 +10,7 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
 {
 #endif
 
-ConfinePointer::ConfinePointer(QWindow* window)
+LockPointer::LockPointer(QWindow* window)
     : _window(window)
 {
     _registryListener.global = [](void* data, wl_registry* registry, const uint32_t name, const char* interface,
@@ -30,9 +30,9 @@ ConfinePointer::ConfinePointer(QWindow* window)
     _display = static_cast<wl_display*>(_nativeInterface->nativeResourceForIntegration("wl_display"));
 }
 
-void ConfinePointer::confinePointer(const QRect region)
+void LockPointer::lockPointer(const QRect region)
 {
-    if (_confined)
+    if (_locked)
     {
         return;
     }
@@ -47,41 +47,41 @@ void ConfinePointer::confinePointer(const QRect region)
 
     wl_display_roundtrip(_display);
 
-    if (_confinedRegion)
+    if (_lockedRegion)
     {
-        wl_region_destroy(_confinedRegion);
-        _confinedRegion = nullptr;
+        wl_region_destroy(_lockedRegion);
+        _lockedRegion = nullptr;
     }
-    _confinedRegion = wl_compositor_create_region(_compositor);
-    wl_region_add(_confinedRegion, region.x(), region.y(), region.width(), region.height());
+    _lockedRegion = wl_compositor_create_region(_compositor);
+    wl_region_add(_lockedRegion, region.x(), region.y(), region.width(), region.height());
 
-    _confinedPointerV1 = zwp_pointer_constraints_v1_confine_pointer(_pointerConstraintsV1,
+    _lockedPointerV1 = zwp_pointer_constraints_v1_lock_pointer(_pointerConstraintsV1,
                                                                waylandSurface,
-                                                               pointer, _confinedRegion,
+                                                               pointer, _lockedRegion,
                                                                ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_PERSISTENT);
 
     wl_surface_commit(waylandSurface);
     wl_display_roundtrip(_display);
 
-    _confined = true;
+    _locked = true;
 }
 
-void ConfinePointer::releasePointer()
+void LockPointer::unlockPointer()
 {
-    if (!_confined)
+    if (!_locked)
     {
         return;
     }
 
-    zwp_confined_pointer_v1_destroy(_confinedPointerV1);
+    zwp_locked_pointer_v1_destroy(_lockedPointerV1);
     wl_display_roundtrip(_display);
 
-    _confined = false;
+    _locked = false;
 }
 
-bool ConfinePointer::isPointerConfined() const
+bool LockPointer::isPointerLocked() const
 {
-    return _confined;
+    return _locked;
 }
 
 #ifdef WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
