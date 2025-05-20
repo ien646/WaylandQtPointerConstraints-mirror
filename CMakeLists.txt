@@ -20,8 +20,8 @@ execute_process(COMMAND bash -c ${CMAKE_SOURCE_DIR}/generate-protocols.sh)
 
 add_library(
         ${TARGET_NAME}
-        LockPointer.cpp
-        ConfinePointer.cpp
+        src/LockPointer.cpp
+        src/ConfinePointer.cpp
         ${CMAKE_BINARY_DIR}/generated-protocols/pointer-constraints.c
 )
 
@@ -40,11 +40,14 @@ target_link_libraries(
         Qt6::Widgets
         wayland-client)
 
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_BINARY_DIR}/generated-protocols)
+target_include_directories(${TARGET_NAME} PUBLIC include)
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_BINARY_DIR}/generated-protocols)
 
 if (BUILD_EXAMPLES)
     add_executable(LockingButton examples/LockingButton.cpp)
     add_executable(ConfinedButton examples/ConfinedButton.cpp)
     target_link_libraries(LockingButton ${TARGET_NAME} Qt6::Widgets)
     target_link_libraries(ConfinedButton ${TARGET_NAME} Qt6::Widgets)
+    target_include_directories(LockingButton PRIVATE ${CMAKE_BINARY_DIR}/generated-protocols)
+    target_include_directories(ConfinedButton PRIVATE ${CMAKE_BINARY_DIR}/generated-protocols)
 endif ()
