@@ -1,8 +1,3 @@
-#include "WaylandQtPointerConstraints/LockPointer.h"
-#include "WaylandQtPointerConstraints/LockPointer.h"
-#include "WaylandQtPointerConstraints/LockPointer.h"
-#include "WaylandQtPointerConstraints/LockPointer.h"
-
 #include <WaylandQtPointerConstraints/LockPointer.h>
 
 #include <QGuiApplication>
@@ -19,6 +14,12 @@ LockPointer::LockPointer(QWindow* window)
     : QObject(window)
     , _window(window)
 {
+    if (_window == nullptr)
+    {
+        std::printf("(LockPointer) Window pointer is null!\nGet ready to crash...\n");
+        return;
+    }
+
     _registryListener.global = [](void* data, wl_registry* registry, const uint32_t name, const char* interface,
                                   const uint32_t version)
     {
