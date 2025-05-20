@@ -15,6 +15,7 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
     {
     public:
         explicit ConfinePointer(QWindow* window);
+        ~ConfinePointer();
 
         void confinePointer(QRect region);
         void releasePointer();

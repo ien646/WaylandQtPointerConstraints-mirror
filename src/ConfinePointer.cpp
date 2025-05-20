@@ -30,6 +30,22 @@ ConfinePointer::ConfinePointer(QWindow* window)
     _display = static_cast<wl_display*>(_nativeInterface->nativeResourceForIntegration("wl_display"));
 }
 
+ConfinePointer::~ConfinePointer()
+{
+    if (_confined)
+    {
+        releasePointer();
+    }
+    if (_confinedRegion)
+    {
+        wl_region_destroy(_confinedRegion);
+    }
+    if (_pointerConstraintsV1)
+    {
+        zwp_pointer_constraints_v1_destroy(_pointerConstraintsV1);
+    }
+}
+
 void ConfinePointer::confinePointer(const QRect region)
 {
     if (_confined)
@@ -56,9 +72,9 @@ void ConfinePointer::confinePointer(const QRect region)
     wl_region_add(_confinedRegion, region.x(), region.y(), region.width(), region.height());
 
     _confinedPointerV1 = zwp_pointer_constraints_v1_confine_pointer(_pointerConstraintsV1,
-                                                               waylandSurface,
-                                                               pointer, _confinedRegion,
-                                                               ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_PERSISTENT);
+                                                                    waylandSurface,
+                                                                    pointer, _confinedRegion,
+                                                                    ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_PERSISTENT);
 
     wl_surface_commit(waylandSurface);
     wl_display_roundtrip(_display);
