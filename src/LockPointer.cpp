@@ -16,7 +16,8 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
 #endif
 
 LockPointer::LockPointer(QWindow* window)
-    : _window(window)
+    : QObject(window)
+    , _window(window)
 {
     _registryListener.global = [](void* data, wl_registry* registry, const uint32_t name, const char* interface,
                                   const uint32_t version)
