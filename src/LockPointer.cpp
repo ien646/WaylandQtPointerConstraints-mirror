@@ -130,7 +130,7 @@ bool LockPointer::isPointerLocked() const
 
 void LockPointer::emitMouseMovementDelta(const QPoint delta)
 {
-    if (_locked && delta.x() > 0 && delta.y() > 0)
+    if (_locked)
     {
         emit mouseMovementDelta(delta);
     }
