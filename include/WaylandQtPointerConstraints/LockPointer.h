@@ -15,6 +15,7 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
     {
     public:
         explicit LockPointer(QWindow* window);
+        ~LockPointer();
 
         void lockPointer(QRect region);
         void unlockPointer();
