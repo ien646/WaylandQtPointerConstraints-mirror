@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 
-#include "../LockPointer.h"
+#include <WaylandQtPointerConstraints/LockPointer.h>
 
 class ConfiningButton final : public QPushButton
 {
