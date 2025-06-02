@@ -42,14 +42,19 @@ ConfinePointer::~ConfinePointer()
     {
         releasePointer();
     }
-    if (_confinedRegion)
+    if (_confinedRegion != nullptr)
     {
         wl_region_destroy(_confinedRegion);
     }
-    if (_pointerConstraintsV1)
+    if (_pointerConstraintsV1 != nullptr)
     {
         zwp_pointer_constraints_v1_destroy(_pointerConstraintsV1);
     }
+    if (_confinedPointerV1 != nullptr)
+    {
+        zwp_confined_pointer_v1_destroy(_confinedPointerV1);
+    }
+    wl_display_roundtrip(_display);
 }
 
 void ConfinePointer::confinePointer(const QRect region)
