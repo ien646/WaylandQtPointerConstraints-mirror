@@ -11,7 +11,7 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
 #endif
 
     LockPointer::LockPointer(QWindow* window)
-        : QObject(window)
+        : QObject(nullptr) // Never automatically destroy
         , _window(window)
     {
         if (_window == nullptr)
