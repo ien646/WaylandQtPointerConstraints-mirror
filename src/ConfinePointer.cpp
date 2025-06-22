@@ -38,6 +38,7 @@ ConfinePointer::ConfinePointer(QWindow* window)
 
 ConfinePointer::~ConfinePointer()
 {
+    wl_display_roundtrip(_display);
     if (_confined)
     {
         releasePointer();
@@ -54,7 +55,6 @@ ConfinePointer::~ConfinePointer()
     {
         zwp_confined_pointer_v1_destroy(_confinedPointerV1);
     }
-    wl_display_roundtrip(_display);
 }
 
 void ConfinePointer::confinePointer(const QRect region)
