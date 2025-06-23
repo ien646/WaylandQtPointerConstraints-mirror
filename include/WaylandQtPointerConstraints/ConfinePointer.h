@@ -11,7 +11,7 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
 {
 #endif
 
-    class ConfinePointer
+    class ConfinePointer final
     {
     public:
         explicit ConfinePointer(QWindow* window);

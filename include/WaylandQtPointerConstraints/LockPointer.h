@@ -12,12 +12,12 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
 {
 #endif
 
-    class LockPointer : public QObject
+    class LockPointer final : public QObject
     {
         Q_OBJECT
     public:
         explicit LockPointer(QWindow* window);
-        ~LockPointer();
+        ~LockPointer() override;
 
         void lockPointer(QRect region);
         void unlockPointer();
