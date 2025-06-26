@@ -57,7 +57,7 @@ LockPointer::LockPointer(QWindow* window)
 
 LockPointer::~LockPointer()
 {
-    wl_display_roundtrip(_display);
+    wl_display_dispatch_pending(_display);
     if (_locked)
     {
         unlockPointer();

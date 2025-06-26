@@ -38,7 +38,7 @@ ConfinePointer::ConfinePointer(QWindow* window)
 
 ConfinePointer::~ConfinePointer()
 {
-    wl_display_roundtrip(_display);
+    wl_display_dispatch_pending(_display);
     if (_confined)
     {
         releasePointer();
