@@ -38,11 +38,14 @@ ConfinePointer::ConfinePointer(QWindow* window)
 
 ConfinePointer::~ConfinePointer()
 {
-    wl_display_dispatch_pending(_display);
     if (_confined)
     {
         releasePointer();
     }
+
+    wl_registry_destroy(_registry);
+    wl_display_dispatch_pending(_display);
+
     if (_confinedRegion != nullptr)
     {
         wl_region_destroy(_confinedRegion);
@@ -69,8 +72,8 @@ void ConfinePointer::confinePointer(const QRect region)
 
     auto* pointer = static_cast<wl_pointer*>(_nativeInterface->nativeResourceForIntegration("wl_pointer"));
 
-    auto* registry = wl_display_get_registry(_display);
-    wl_registry_add_listener(registry, &_registryListener, &_pointerConstraintsV1);
+    _registry = wl_display_get_registry(_display);
+    wl_registry_add_listener(_registry, &_registryListener, &_pointerConstraintsV1);
 
     wl_display_roundtrip(_display);
 
