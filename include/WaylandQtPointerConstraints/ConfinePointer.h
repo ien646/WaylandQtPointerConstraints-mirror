@@ -28,6 +28,7 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
         QPlatformNativeInterface* _nativeInterface = nullptr;
         wl_compositor* _compositor = nullptr;
         wl_display* _display = nullptr;
+        wl_registry* _registry = nullptr;
         zwp_pointer_constraints_v1* _pointerConstraintsV1 = nullptr;
         zwp_confined_pointer_v1* _confinedPointerV1 = nullptr;
         wl_region* _confinedRegion = nullptr;

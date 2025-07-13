@@ -36,6 +36,7 @@ namespace WAYLAND_QT_POINTER_CONSTRAINTS_CUSTOM_NAMESPACE
         zwp_pointer_constraints_v1* _pointerConstraintsV1 = nullptr;
         zwp_locked_pointer_v1* _lockedPointerV1 = nullptr;
         wl_region* _lockedRegion = nullptr;
+        wl_registry* _registry = nullptr;
         wl_registry_listener _registryListener = {};
         zwp_relative_pointer_manager_v1* _relativePointerManagerV1 = nullptr;
         zwp_relative_pointer_v1* _relativePointerV1 = nullptr;

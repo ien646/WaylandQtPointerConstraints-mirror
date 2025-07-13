@@ -57,11 +57,14 @@ LockPointer::LockPointer(QWindow* window)
 
 LockPointer::~LockPointer()
 {
-    wl_display_dispatch_pending(_display);
     if (_locked)
     {
         unlockPointer();
     }
+
+    wl_registry_destroy(_registry);
+    wl_display_dispatch_pending(_display);
+
     if (_lockedRegion)
     {
         wl_region_destroy(_lockedRegion);
@@ -91,8 +94,8 @@ void LockPointer::lockPointer(const QRect region)
 
     auto* pointer = static_cast<wl_pointer*>(_nativeInterface->nativeResourceForIntegration("wl_pointer"));
 
-    auto* registry = wl_display_get_registry(_display);
-    wl_registry_add_listener(registry, &_registryListener, this);
+    _registry = wl_display_get_registry(_display);
+    wl_registry_add_listener(_registry, &_registryListener, this);
 
     wl_display_roundtrip(_display);
 
