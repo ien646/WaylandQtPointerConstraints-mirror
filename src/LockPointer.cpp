@@ -62,8 +62,8 @@ LockPointer::~LockPointer()
         unlockPointer();
     }
 
-    wl_registry_destroy(_registry);
     wl_display_dispatch_pending(_display);
+    wl_registry_destroy(_registry);
 
     if (_lockedRegion)
     {
